@@ -21,9 +21,7 @@ Bot WhatsApp sederhana menggunakan Node.js dan Baileys.
 2. Jalankan `yarn install` atau `npm install`
 3. Jalankan bot dengan `node index.js`
 
-## Konfigurasi
-- Tambahkan nomor admin dan ID grup di `config.js`
-- Jangan upload folder `auth/` dan `node_modules/` ke GitHub
 
 ## Kontribusi
 Silakan pull request atau issue jika ingin menambah fitur.
+

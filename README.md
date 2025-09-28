@@ -1,6 +1,6 @@
 # whatsapp-bot.js
 
-# Install
+### Install
 ```npm install```
-# Use
+### Use
 ```node index.js```

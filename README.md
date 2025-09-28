@@ -2,5 +2,5 @@
 
 # Install
 ```npm install```
-# How to use
+# Use
 ```node index.js```

@@ -138,6 +138,50 @@ async function connectBot() {
         break;
       }
 
+      // FITUR BARU: MENTION SEMUA MEMBER GRUP
+      case 'all': {
+        // Cek apakah chat adalah grup
+        if (!from.endsWith('@g.us')) {
+          await sock.sendMessage(from, { text: '❌ Command ini hanya bisa digunakan di grup' });
+          return;
+        }
+
+        try {
+          // Dapatkan metadata grup
+          const groupMetadata = await sock.groupMetadata(from);
+          const participants = groupMetadata.participants;
+          const groupAdmins = participants.filter(p => p.admin).map(p => p.id);
+          const sender = msg.key.participant || msg.key.remoteJid;
+
+          // Cek apakah pengirim adalah admin
+          if (!groupAdmins.includes(sender)) {
+            await sock.sendMessage(from, { text: '❌ Hanya admin yang bisa menggunakan command ini' });
+            return;
+          }
+
+          // Ambil teks setelah command
+          const messageText = text.trim().slice(4).trim(); // karena '?all' panjangnya 4
+          if (!messageText) {
+            await sock.sendMessage(from, { text: '❌ Silakan masukkan pesan setelah command ?all' });
+            return;
+          }
+
+          // Ambil semua jid anggota
+          const mentions = participants.map(p => p.id);
+
+          // Kirim pesan dengan mentions
+          await sock.sendMessage(from, {
+            text: messageText,
+            mentions: mentions
+          });
+
+        } catch (error) {
+          console.error('Error dalam command all:', error);
+          await sock.sendMessage(from, { text: '❌ Terjadi kesalahan saat memproses command' });
+        }
+        break;
+      }
+
       default:
         await sock.sendMessage(from, { text: `❓ Command "${command}" tidak dikenal` });
     }
